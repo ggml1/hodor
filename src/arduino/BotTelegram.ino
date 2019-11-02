@@ -8,11 +8,11 @@
 Servo myservo;
  
 // Initialize Wifi connection to the router
-char ssid[] = "CINGUESTS";     // your network SSID (name)
-char password[] = "acessocin"; // your network key
+char ssid[] = SSID;     // your network SSID (name)
+char password[] = PASSWORD; // your network key
  
 // Initialize Telegram BOT
-#define BOTtoken "994645514:AAHnJmkCmiXDroPH0HeHJ3L1vqCoSIdehY0"  // your Bot Token (Get from Botfather)
+#define BOTtoken TOKEN  // your Bot Token (Get from Botfather)
  
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
