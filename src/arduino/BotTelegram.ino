@@ -8,23 +8,23 @@
 
 class Gate{
 public:
-	Gate(int pin);
-	void open();
-	void close();
+  Gate(int pin);
+  void open();
+  void close();
 private:
-	Servo atuador;
+  Servo atuador;
 }
 
 Gate::Gate(int pin){
-	atuador.attach(pin);
+  atuador.attach(pin);
 }
 
 void Gate::open(){
-  	atuador.write(180);
+  atuador.write(180);
 }
 
 void Gate::close(){
-	atuador.write(90);
+  atuador.write(90);
 }
 
 // Initialize Wifi connection to the router
@@ -32,17 +32,17 @@ char ssid[] = SSID;     // your network SSID (name)
 char password[] = PASSWORD; // your network key
  
 // Initialize Telegram BOT
-#define BOTtoken TOKEN  // your Bot Token (Get from Botfather)
+#define BOT_TOKEN TOKEN  // your Bot Token (Get from Botfather)
 
 #define GATE_PIN 13
 
 Gate gate(GATE_PIN);
 
 WiFiClientSecure client;
-UniversalTelegramBot bot(BOTtoken, client);
+UniversalTelegramBot bot(BOT_TOKEN, client);
  
-int Bot_mtbs = 1000; //mean time between scan messages
-long Bot_lasttime;   //last time messages' scan has been done
+int BotMtbs = 1000; //mean time between scan messages
+long BotLastTime;   //last time messages' scan has been done
  
 
 void setup() {
@@ -65,7 +65,7 @@ void setup() {
 }
  
 void loop() {
-  if (millis() > Bot_lasttime + Bot_mtbs)  {
+  if (millis() > BotLastTime + BotMtbs)  {
     int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
  
     while(numNewMessages) {
@@ -87,6 +87,6 @@ void loop() {
       numNewMessages = bot.getUpdates(bot.last_message_received + 1);
     }
  
-    Bot_lasttime = millis();
+    BotLastTime = millis();
   }
 }
