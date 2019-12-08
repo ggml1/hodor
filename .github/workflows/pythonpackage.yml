@@ -18,9 +18,11 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
+      uses: ggml1/hodor/actions
       run: |
         python3 -m pip install --upgrade pip
-        python3 -m pip install -r ./actions/requirements.txt
+        python3 -m pip install -r requirements.txt
     - name: Run integration test
+      uses: ggml1/hodor/actions
       run: |
-        python3 ./actions/test.py https://script.google.com/macros/s/AKfycbzaAZO7H-PnI6f-TDYNhC6VVSQFymdRjdatkMqcnN6gRHl9Tefi/exec?type=integrationtest
+        python3 test.py https://script.google.com/macros/s/AKfycbzaAZO7H-PnI6f-TDYNhC6VVSQFymdRjdatkMqcnN6gRHl9Tefi/exec?type=integrationtest
