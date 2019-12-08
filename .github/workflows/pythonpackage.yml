@@ -26,5 +26,7 @@ jobs:
         python3 -m pip install -r requirements.txt
     - name: Run integration test
       working-directory: /tmp/hodor/actions
+      env:
+        INTEGRATION_TESTS_URL: ${{ secrets.INTEGRATION_TESTS_URL }}
       run: |
         python3 test.py $INTEGRATION_TESTS_URL
