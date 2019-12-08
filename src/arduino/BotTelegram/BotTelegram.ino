@@ -70,7 +70,7 @@ void setup()
 void loop()
 {
   HTTPClient http;
-  http.begin("");
+  http.begin("https://script.google.com/macros/s/AKfycbzaAZO7H-PnI6f-TDYNhC6VVSQFymdRjdatkMqcnN6gRHl9Tefi/exec?type=statusportao");
   int httpCode = http.GET();
 
   if(httpCode > 0){
@@ -92,7 +92,7 @@ void loop()
   }
   
   http.end();
-  delay(10000);
+  delay(3000);
 }
 
 
