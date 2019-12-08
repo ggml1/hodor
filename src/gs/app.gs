@@ -2,8 +2,8 @@ var token = "TELEGRAM_BOT_TOKEN";
 var telegramUrl = "TELEGRAM_BOT_API_URL";
 var webAppUrl = "GS_WEBAPP_URL";
 var ssId = "SPREADSHEET_ID";
-var gateStatusSheet = 'StatusPortao';
-var gateStatusCell = 'A1';
+var gateStatusSheet = 'GATE_STATUS_SHEET_NAME';
+var gateStatusCell = 'GATE_STATUS_CELL';
 
 function sendText(id, text) {
   var url = telegramUrl + "/sendMessage?chat_id=" + id + "&text=" + text;
