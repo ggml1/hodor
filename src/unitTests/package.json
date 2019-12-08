@@ -1,0 +1,15 @@
+{
+  "name": "unitTests",
+  "version": "1.0.0",
+  "description": "Testes unitários para o projeto de ESS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Clodes Fernando",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2"
+  }
+}
