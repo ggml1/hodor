@@ -17,8 +17,10 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Clone repository
+      run: git clone "https://$GITHUB_TOKEN@github.com/ggml1/hodor.git"
     - name: Change directory
-      run: cd actions
+      run: cd hodor/actions
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip
