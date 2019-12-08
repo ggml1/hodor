@@ -2,11 +2,19 @@ var token = "TELEGRAM_BOT_TOKEN";
 var telegramUrl = "TELEGRAM_BOT_API_URL";
 var webAppUrl = "GS_WEBAPP_URL";
 var ssId = "SPREADSHEET_ID";
+var gateStatusSheet = 'GATE_STATUS_SHEET_NAME';
+var gateStatusCell = 'GATE_STATUS_CELL';
 
 function sendText(id, text) {
   var url = telegramUrl + "/sendMessage?chat_id=" + id + "&text=" + text;
   var response = UrlFetchApp.fetch(url);
   Logger.log(response.getContentText());
+}
+
+function checaStatusPortao() {
+  var sheet = SpreadsheetApp.openById(ssId).getSheetByName(gateStatusSheet);
+  var statusPortao = sheet.getRange(gateStatusCell).getValue(); //valor da celula que guarda o estado do portão se Ligado ou Desligado
+  return HtmlService.createHtmlOutput('<p><br>' + 'Estado:' + statusPortao + '<br></b>');
 }
 
 function doGet(e) {
@@ -24,7 +32,24 @@ function doGet(e) {
         response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
       } 
       break;
-    case "abrirportao":
+    case "testcadastrar":
+      var test_result = testCadastrar(e.parameter.house, e.parameter.id, e.parameter.name, e.parameter.user, e.parameter.user_type, e.parameter.dataSaida);
+      if (test_result == false) {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "False"}));
+      } else {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
+      }
+      break;
+    case "testremover":
+      var test_result = testRemover(e.parameter.id, e.parameter.house, e.parameter.user);
+      if (test_result == false) {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "False"}));
+      } else {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
+      }
+      break;
+    case "statusportao":
+      response = checaStatusPortao();
       break;
     default:
       response = ContentService.createTextOutput(JSON.stringify({msg: "Hello!"}));
