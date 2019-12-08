@@ -2,11 +2,19 @@ var token = "TELEGRAM_BOT_TOKEN";
 var telegramUrl = "TELEGRAM_BOT_API_URL";
 var webAppUrl = "GS_WEBAPP_URL";
 var ssId = "SPREADSHEET_ID";
+var gateStatusSheet = 'StatusPortao';
+var gateStatusCell = 'A1';
 
 function sendText(id, text) {
   var url = telegramUrl + "/sendMessage?chat_id=" + id + "&text=" + text;
   var response = UrlFetchApp.fetch(url);
   Logger.log(response.getContentText());
+}
+
+function checaStatusPortao() {
+  var sheet = SpreadsheetApp.openById(ssId).getSheetByName(gateStatusSheet);
+  var statusPortao = sheet.getRange(gateStatusCell).getValue(); //valor da celula que guarda o estado do portão se Ligado ou Desligado
+  return HtmlService.createHtmlOutput('<p><br>' + 'Estado:' + statusPortao + '<br></b>');
 }
 
 function doGet(e) {
@@ -24,7 +32,8 @@ function doGet(e) {
         response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
       } 
       break;
-    case "abrirportao":
+    case "statusportao":
+      response = checaStatusPortao();
       break;
     default:
       response = ContentService.createTextOutput(JSON.stringify({msg: "Hello!"}));
