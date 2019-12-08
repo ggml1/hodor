@@ -32,6 +32,22 @@ function doGet(e) {
         response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
       } 
       break;
+    case "testcadastrar":
+      var test_result = testCadastrar(e.parameter.house, e.parameter.id, e.parameter.name, e.parameter.user, e.parameter.user_type, e.parameter.dataSaida);
+      if (test_result == false) {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "False"}));
+      } else {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
+      }
+      break;
+    case "testremover":
+      var test_result = testRemover(e.parameter.id, e.parameter.house, e.parameter.user);
+      if (test_result == false) {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "False"}));
+      } else {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
+      }
+      break;
     case "statusportao":
       response = checaStatusPortao();
       break;
