@@ -5,7 +5,6 @@ on: [push]
 jobs:
   unit:
     runs-on: ubuntu-16.04
-    name: Node sample
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
@@ -19,6 +18,8 @@ jobs:
       run: npm install
     - name: Run unit tests
       working-directory: /tmp/hodor/actions/tests/unit/src/
+      env:
+        GS_WEBAPP_URL: ${{ secrets.INTEGRATION_TESTS_URL }}
       run: npx mocha --timeout 5000
         
   build:
