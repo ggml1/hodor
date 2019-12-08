@@ -9,7 +9,7 @@ app.get('/InserirUser', (req, res_query) => {
   let idQ = 'id=' + String(req.query.id);
   let nameQ = 'name=' + String(req.query.name);
   let userQ = 'user=' + String(req.query.user);
-  let user_typeQ = 'user_type=' + String(req.query.user_type);
+  let user_typeQ = 'user_type=' + String(req.query.type);
   let dataSaidaQ = 'dataSaida=' + String(req.query.dataSaida);
   let queryStr = 'type=testcadastrar' + '&' + houseQ + '&' + idQ + '&' + nameQ + '&' + userQ + '&' + user_typeQ + '&' + dataSaidaQ;
   request('GS_WEBAPP_URL' + '?' + queryStr, {}, (err, res, body) => {
