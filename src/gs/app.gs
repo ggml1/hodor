@@ -48,6 +48,14 @@ function doGet(e) {
         response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
       }
       break;
+    case "testlistarregistrados":
+      var test_result = testListarRegistrados(e.parameter.house, e.parameter.id);
+      if (test_result == false) {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "False"}));
+      } else {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
+      }
+      break;
     case "statusportao":
       response = checaStatusPortao();
       break;
