@@ -34,5 +34,7 @@ function run() {
   var user = "novoteste";
   var type = "visitante";
   var dataSaida = "Fri Jan 01 00:00:00 GMT-02:00 2010";
-  Logger.log("Teste de integracao: " + integrationTest(house, id, name, user, type, dataSaida));
+  var resultado_teste = integrationTest(house, id, name, user, type, dataSaida);
+  Logger.log("Teste de integracao: " + resultado_teste);
+  return resultado_teste;
 }
