@@ -3,14 +3,30 @@ name: build
 on: [push]
 
 jobs:
+  unit:
+    runs-on: ubuntu-16.04
+    name: Node sample
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - run: npm install
+    - name: Clone repository
+      run: git clone "https://$GITHUB_TOKEN@github.com/ggml1/hodor.git" /tmp/hodor
+    - name: Install unit testing dependencies
+      working-directory: /tmp/hodor/actions/tests/unit/
+      run: npm install
+    - name: Run unit tests
+      working-directory: /tmp/hodor/actions/tests/unit/src/
+      run: npx mocha --timeout 5000
+        
   build:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
       matrix:
         python-version: [3.7]
-
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
@@ -19,13 +35,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Clone repository
       run: git clone "https://$GITHUB_TOKEN@github.com/ggml1/hodor.git" /tmp/hodor
-    - name: Install dependencies
-      working-directory: /tmp/hodor/actions
+    - name: Install integration test dependencies
+      working-directory: /tmp/hodor/actions/tests/build
       run: |
         python3 -m pip install --upgrade pip
         python3 -m pip install -r requirements.txt
     - name: Run integration test
-      working-directory: /tmp/hodor/actions
+      working-directory: /tmp/hodor/actions/tests/build
       env:
         INTEGRATION_TESTS_URL: ${{ secrets.INTEGRATION_TESTS_URL }}
       run: |
