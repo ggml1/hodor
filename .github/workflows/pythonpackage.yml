@@ -1,0 +1,26 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [3.7]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python3 -m pip3 install --upgrade pip
+        pip3 install -r actions/requirements.txt
+    - name: Run integration test
+      run: |
+        python3 actions/test.py https://script.google.com/macros/s/AKfycbzaAZO7H-PnI6f-TDYNhC6VVSQFymdRjdatkMqcnN6gRHl9Tefi/exec?type=integrationtest
