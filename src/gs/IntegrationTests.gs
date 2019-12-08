@@ -31,7 +31,7 @@ function run() {
   var house = "casa";
   var id = "789146317";
   var name = "ffern";
-  var user = "novoteste";
+  var user = "usuario_teste_integracao";
   var type = "visitante";
   var dataSaida = "Fri Jan 01 00:00:00 GMT-02:00 2010";
   var resultado_teste = integrationTest(house, id, name, user, type, dataSaida);
