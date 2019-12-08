@@ -57,7 +57,7 @@ app.get('/ListarRegistrados', (req, res_query) => {
   let houseQ = 'house=' + String(req.query.house);
   let idQ = 'id=' + String(req.query.id);
   let queryStr = 'type=testlistarregistrados' + '&' + houseQ + '&' + idQ;
-  request('https://script.google.com/macros/s/AKfycbzaAZO7H-PnI6f-TDYNhC6VVSQFymdRjdatkMqcnN6gRHl9Tefi/exec?' + queryStr, {}, (err, res, body) => {
+  request('GS_WEBAPP_URL' + '?' + queryStr, {}, (err, res, body) => {
     if (err) { return console.log(err); }
     result = res['body'];
     result = JSON.parse(result);
