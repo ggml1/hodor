@@ -1,21 +1,41 @@
-var token = "";
-var telegramUrl = "";
-var webAppUrl = "";
-var ssId = "";
+var token = "TELEGRAM_BOT_TOKEN";
+var telegramUrl = "TELEGRAM_BOT_API_URL";
+var webAppUrl = "GS_WEBAPP_URL";
+var ssId = "SPREADSHEET_ID";
 
-function sendText(id,text) {
+function sendText(id, text) {
   var url = telegramUrl + "/sendMessage?chat_id=" + id + "&text=" + text;
   var response = UrlFetchApp.fetch(url);
   Logger.log(response.getContentText());
 }
 
 function doGet(e) {
-  return HtmlService.createHtmlOutput("Hello " + JSON.stringify(e));
+  var request_type = e.parameter.type || "Health check";
+  var response;
+  switch (request_type) {
+    case "healthcheck":
+      response = ContentService.createTextOutput(JSON.stringify({msg: "Endpoint is working!"}));
+      break;
+    case "integrationtest":
+      var test_result = run();
+      if (test_result == false) {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "False"}));
+      } else {
+        response = ContentService.createTextOutput(JSON.stringify({msg: "True"}));
+      } 
+      break;
+    case "abrirportao":
+      break;
+    default:
+      response = ContentService.createTextOutput(JSON.stringify({msg: "Hello!"}));
+      break;
+  }  
+  return response;
 }
 
 function getSheet(house) {
-    var sheet = SpreadsheetApp.openById(ssId).getSheetByName(house) ? SpreadsheetApp.openById(ssId).getSheetByName(house) : SpreadsheetApp.openById(ssId).insertSheet(house);
-    return sheet;
+  var sheet = SpreadsheetApp.openById(ssId).getSheetByName(house) ? SpreadsheetApp.openById(ssId).getSheetByName(house) : SpreadsheetApp.openById(ssId).insertSheet(house);
+  return sheet;
 }
 
 function nivel(permissao) {
@@ -42,9 +62,9 @@ function checaUsuario(house, id, permissao) {
 }
 
 function print_help() {
-    sendText(id, "Para cadastrar um usuário: @cadastrar NomeDaResidência NomeDoUsuário Tipo(Morador/Visitante/Sindico) DataDeSaida(caso seja visitante)");
-    sendText(id, "Para remover um usuário: @remover NomeDaResidência NomeDoUsuário");
-    sendText(id, "Para abrir a porta: @abrirporta NomeDaResidência");
+  sendText(id, "Para cadastrar um usuário: @cadastrar NomeDaResidência NomeDoUsuário Tipo(Morador/Visitante/Sindico) DataDeSaida(caso seja visitante)");
+  sendText(id, "Para remover um usuário: @remover NomeDaResidência NomeDoUsuário");
+  sendText(id, "Para abrir a porta: @abrirporta NomeDaResidência");
 }
 
 function listarCadastradosPorUsuario(sheet, house, user_id) {
@@ -64,15 +84,15 @@ function existeCasa(house) {
 }
 
 function cadastrar(id, name, args) {
-    var [command, house, user, type, dataSaida] = args;
-    var sheet = getSheet(house);
-    if (checaUsuario(house, id, "VISITANTE")) {
-      sendText(id, "O usuário " + user + " já possui cadastro na residência " + house);
-      return;
-    } 
-    sheet.appendRow([new Date(), id, name, user, type, dataSaida]);
-    sendText(id, "O usuário " + user + " foi cadastrado na residência " + house);
-  }
+  var [command, house, user, type, dataSaida] = args;
+  var sheet = getSheet(house);
+  if (checaUsuario(house, id, "VISITANTE")) {
+    sendText(id, "O usuário " + user + " já possui cadastro na residência " + house);
+    return;
+  } 
+  sheet.appendRow([new Date(), id, name, user, type, dataSaida]);
+  sendText(id, "O usuário " + user + " foi cadastrado na residência " + house);
+}
   
 function remover(id, args) {
   var [command, house, user] = args;
@@ -90,50 +110,50 @@ function remover(id, args) {
 }
 
 function listarUsuarios(id, args) {
-    var [command, house] = args
-    var sheet = getSheet(house);
-    var cadastrados = listarCadastradosPorUsuario(sheet, house, id);
-    var msg = "Os usuarios cadastrados por você foram:%0A";
-    for (i = 0; i < cadastrados.length; i++) {
-        msg += "- " + cadastrados[i].toString() + "%0A";
-    }
-    sendText(id, msg);
+  var [command, house] = args
+  var sheet = getSheet(house);
+  var cadastrados = listarCadastradosPorUsuario(sheet, house, id);
+  var msg = "Os usuarios cadastrados por você foram:%0A";
+  for (i = 0; i < cadastrados.length; i++) {
+    msg += "- " + cadastrados[i].toString() + "%0A";
+  }
+  sendText(id, msg);
 }
 
 function printInvalido() {
-    sendText(id, "Comando invalido. Digite @help para saber os comandos disponiveis");
+  sendText(id, "Comando invalido. Digite @help para saber os comandos disponiveis");
 }
 
 function validarCadastrar(id, args) {
-    if (args.length < 4) {
-        printInvalido();
-        return false;
-    }
-    else if (!existeCasa(args[1])) {
-        sendText(id, "Residência não cadastrada");
-        return false;
-    }
-    return true;
+  if (args.length < 4) {
+    printInvalido();
+    return false;
+  }
+  else if (!existeCasa(args[1])) {
+    sendText(id, "Residência não cadastrada");
+    return false;
+  }
+  return true;
 }
 
 function validarRemover(id, args) {
-    if (args.length != 3) {
-        printInvalido();
-        return false;
-    }
-    else if (!existeCasa(args[1])) {
-        sendText(id, "Residência não cadastrada");
-        return false;
-    }
-    return true;
+  if (args.length != 3) {
+    printInvalido();
+    return false;
+  }
+  else if (!existeCasa(args[1])) {
+    sendText(id, "Residência não cadastrada");
+    return false;
+  }
+  return true;
 }
 
 function validarListarUsuarios(id, args) {
-    if (args.length != 2) {
-        printInvalido();
-        return false;
-    }
-    return true;
+  if (args.length != 2) {
+    printInvalido();
+    return false;
+  }
+  return true;
 }
 
 function doPost(e) {
