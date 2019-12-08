@@ -12,7 +12,7 @@ app.get('/InserirUser', (req, res_query) => {
   let user_typeQ = 'user_type=' + String(req.query.user_type);
   let dataSaidaQ = 'dataSaida=' + String(req.query.dataSaida);
   let queryStr = 'type=testcadastrar' + '&' + houseQ + '&' + idQ + '&' + nameQ + '&' + userQ + '&' + user_typeQ + '&' + dataSaidaQ;
-  request('https://script.google.com/macros/s/AKfycbzaAZO7H-PnI6f-TDYNhC6VVSQFymdRjdatkMqcnN6gRHl9Tefi/exec?' + queryStr, {}, (err, res, body) => {
+  request('GS_WEBAPP_URL' + '?' + queryStr, {}, (err, res, body) => {
     if (err) { return console.log(err); }
     result = res['body'];
     result = JSON.parse(result);
@@ -35,7 +35,7 @@ app.get('/RemoverUser', (req, res_query) => {
   let idQ = 'id=' + String(req.query.id);
   let userQ = 'user=' + String(req.query.user);
   let queryStr = 'type=testremover' + '&' + houseQ + '&' + idQ + '&' + userQ;
-  request('https://script.google.com/macros/s/AKfycbzaAZO7H-PnI6f-TDYNhC6VVSQFymdRjdatkMqcnN6gRHl9Tefi/exec?' + queryStr, {}, (err, res, body) => {
+  request('GS_WEBAPP_URL' + '?' + queryStr, {}, (err, res, body) => {
     if (err) { return console.log(err); }
     result = res['body'];
     result = JSON.parse(result);

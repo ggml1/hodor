@@ -1,12 +1,12 @@
 {
-  "name": "triangulo",
+  "name": "unitTests",
   "version": "1.0.0",
-  "description": "Projeto em Node.js para exercitar o conceito de test cases, inspirado no exemplo do livro \"The Art of Software Testing\"",
+  "description": "Testes unitários para o projeto de ESS",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Kiev Gama",
+  "author": "Clodes Fernando",
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.2.0",
