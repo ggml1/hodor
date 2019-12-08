@@ -27,4 +27,4 @@ jobs:
     - name: Run integration test
       working-directory: /tmp/hodor/actions
       run: |
-        python3 test.py https://script.google.com/macros/s/AKfycbzaAZO7H-PnI6f-TDYNhC6VVSQFymdRjdatkMqcnN6gRHl9Tefi/exec?type=integrationtest
+        python3 test.py $INTEGRATION_TESTS_URL
