@@ -14,7 +14,7 @@ function sendText(id, text) {
 
 function checaStatusPortao() {
   var sheet = SpreadsheetApp.openById(ssId).getSheetByName(gateStatusSheet);
-  var statusPortao = sheet.getRange(gateStatusCell).getValue(); //valor da celula que guarda o estado do portão se Ligado ou Desligado
+  var statusPortao = sheet.getRange(gateStatusCell).getValue(); //valor da celula que guarda o estado do portão
   return HtmlService.createHtmlOutput('<p><br>' + 'Estado:' + statusPortao + '<br></b>');
 }
 
@@ -82,12 +82,16 @@ function nivel(permissao) {
 function checaUsuario(house, id, permissaoRequerida) {
   var sheet = SpreadsheetApp.openById(ssId).getSheetByName(house);
   var table = sheet.getDataRange().getValues();
-  sendText(id, "vamos testar!");
   for (i = 0; i < table.length; i++) {
   	if (table[i][1].toString() == id) {
       var permissaoUsuario = table[i][4].toString();
-      sendText(id, permissaoUsuario);
       if (nivel(permissaoUsuario) >= nivel(permissaoRequerida)) {
+        if (permissaoUsuario == 'visitante') {
+          var dataAtual = new Date();
+          var dataLimite = Date.parse(table[i][5].toString());
+          if (dataAtual > dataLimite) return false;
+          else return true;
+        }
         return true;
       } else {
         return false;
@@ -277,20 +281,15 @@ function fechaPortao() {
 }
 
 function validarAberturaPortao(id, args) {
-  sendText(id, "cheguei");
   if (args.length != 2) {
     printInvalido(id);
     return false;
   }
-  sendText(id, "args ok");
   var casa = args[1];
-  sendText(id, "casa: " + casa);
   if (!existeCasa(casa)) {
     printInvalido(id);
     return false;
   }
-  sendText(id, "args ok");
-  sendText(id, "Oi!");
   if (!checaUsuario(casa, id, 'visitante')) {
     sendText(id, "Você não tem permissão suficiente para usar este comando.");
     return false;
