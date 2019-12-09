@@ -4,6 +4,7 @@ var webAppUrl = "GS_WEBAPP_URL";
 var ssId = "SPREADSHEET_ID";
 var gateStatusSheet = 'GATE_STATUS_SHEET_NAME';
 var gateStatusCell = 'GATE_STATUS_CELL';
+var gateCloseTimeout = 6000;
 
 function sendText(id, text) {
   var url = telegramUrl + "/sendMessage?chat_id=" + id + "&text=" + text;
@@ -189,6 +190,18 @@ function validarListarUsuarios(id, args) {
   return true;
 }
 
+function abrePortao() {
+  var sheet = SpreadsheetApp.openById(ssId).getSheetByName(gateStatusSheet);
+  sheet.getRange(gateStatusCell).setValue("Ligado");
+  SpreadsheetApp.flush();
+}
+
+function fechaPortao() {
+  var sheet = SpreadsheetApp.openById(ssId).getSheetByName(gateStatusSheet);
+  sheet.getRange(gateStatusCell).setValue("");
+  SpreadsheetApp.flush();
+}
+
 function doPost(e) {
   var contents = JSON.parse(e.postData.contents);
   var text = contents.message.text;
@@ -200,6 +213,13 @@ function doPost(e) {
     var command = args[0];
 
     switch(command) {
+      case "@abrir_portao":
+        abrePortao();
+        sendText(id, "Portão aberto. Ele será fechado em instantes.");
+        Utilities.sleep(gateCloseTimeout);
+        fechaPortao();
+        sendText(id, "Portão fechado.");
+        break;
       case "@cadastrar":    
         if (!validarCadastrar(id, args)) break;
         cadastrar(id, name, args);
