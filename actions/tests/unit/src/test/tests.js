@@ -62,7 +62,7 @@ describe('Testando a listagem de usuários registrados', () => {
   
   it('Teste 2 da listagem de usuários registrados', (done) => {
     chai.request(api)
-      .get('/ListarRegistrados?house=casa&id=43637437')
+      .get('/ListarRegistrados?house=casa&id=407947855')
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.have.property('status').eql(true)
