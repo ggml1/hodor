@@ -2,11 +2,12 @@ function integrationTest(house, id, user, type, tempoSaida) {
   var sheet = SpreadsheetApp.openById(ssId).getSheetByName(String(house));
   var args = ["cadastrar", house, user, type, tempoSaida];
   cadastrar(id, args);
-  var resultadosObtidos = listarCadastradosPorUsuario(sheet, String(house), String(id));
+  var resultadosObtidos = listarCadastradosPorUsuario(sheet, String(id));
   var found = false;
   for (i = 0; i < resultadosObtidos.length; i++) {
     if (resultadosObtidos[i] == user.toString()) {
       found = true;
+      break;
     }
   }
   if (!found) {
@@ -14,11 +15,12 @@ function integrationTest(house, id, user, type, tempoSaida) {
   }
   args = ["remover", house, user];
   remover(id, args);
-  resultadosObtidos = listarCadastradosPorUsuario(sheet, String(house), String(id));
+  resultadosObtidos = listarCadastradosPorUsuario(sheet, String(id));
   found = false;
   for (i = 0; i < resultadosObtidos.length; i++) {
     if (resultadosObtidos[i] == user.toString()) {
       found = true;
+      break;
     }
   }
   if (found) {

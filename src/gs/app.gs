@@ -34,7 +34,7 @@ function doGet(e) {
       } 
       break;
     case "testcadastrar":
-      var test_result = testCadastrar(e.parameter.house, e.parameter.id, e.parameter.name, e.parameter.user, e.parameter.user_type, e.parameter.dataSaida);
+      var test_result = testCadastrar(e.parameter.house, e.parameter.id, e.parameter.user, e.parameter.user_type, e.parameter.dataSaida);
       if (test_result == false) {
         response = ContentService.createTextOutput(JSON.stringify({msg: "False"}));
       } else {
@@ -82,9 +82,11 @@ function nivel(permissao) {
 function checaUsuario(house, id, permissaoRequerida) {
   var sheet = SpreadsheetApp.openById(ssId).getSheetByName(house);
   var table = sheet.getDataRange().getValues();
+  sendText(id, "vamos testar!");
   for (i = 0; i < table.length; i++) {
   	if (table[i][1].toString() == id) {
       var permissaoUsuario = table[i][4].toString();
+      sendText(id, permissaoUsuario);
       if (nivel(permissaoUsuario) >= nivel(permissaoRequerida)) {
         return true;
       } else {
@@ -130,8 +132,11 @@ function listarCadastradosPorUsuario(sheet, user_id) {
   return resultados;
 }
 
+
 function existeCasa(house) {
-  if (SpreadsheetApp.openById(ssId).getSheetByName(house)) return true;
+  if (SpreadsheetApp.openById(ssId).getSheetByName(house)) {
+    return true;
+  }
   return false;
 }
 
@@ -272,15 +277,20 @@ function fechaPortao() {
 }
 
 function validarAberturaPortao(id, args) {
+  sendText(id, "cheguei");
   if (args.length != 2) {
     printInvalido(id);
     return false;
   }
+  sendText(id, "args ok");
   var casa = args[1];
+  sendText(id, "casa: " + casa);
   if (!existeCasa(casa)) {
     printInvalido(id);
     return false;
   }
+  sendText(id, "args ok");
+  sendText(id, "Oi!");
   if (!checaUsuario(casa, id, 'visitante')) {
     sendText(id, "Você não tem permissão suficiente para usar este comando.");
     return false;

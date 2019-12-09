@@ -1,15 +1,15 @@
-var ssId = "";
+var ssId = "SPREADSHEET_ID";
 
 function testCadastrar(house, id, user, type, dataSaida) {
   var args = ["cadastrar", house, user, type, dataSaida];
   cadastrar(id, args);
   var sheet = SpreadsheetApp.openById(ssId).getSheetByName(String(house));
   var table = sheet.getDataRange().getValues();
-  var vec = ["ignore", id, "", user, type];
+  var vec = ["ignore", "ignore", id, user, type];
   var found = false;
   for (i = 0; i < table.length; i++) {
 	var eq = true;
-    for (j = 1; j <= 4; j++) {
+    for (j = 2; j <= 4; j++) {
       if (table[i][j] != vec[j]) {
         eq = false;
       }
@@ -23,11 +23,11 @@ function testCadastrar(house, id, user, type, dataSaida) {
 
 function testListarRegistrados(house, id) {
   var sheet = SpreadsheetApp.openById(ssId).getSheetByName(String(house));
-  var resultadosObtidos = listarCadastradosPorUsuario(sheet, String(house), String(id));
+  var resultadosObtidos = listarCadastradosPorUsuario(sheet, String(id));
   var table = sheet.getDataRange().getValues();
   var resultadosRequeridos = [];
   for (i = 0; i < table.length; i++) {
-		if (table[i][1].toString() == id.toString()) {
+		if (table[i][2].toString() == id.toString()) {
       resultadosRequeridos.push(table[i][3].toString());
     }
   }
@@ -40,7 +40,6 @@ function testListarRegistrados(house, id) {
 
 function testVisitante(sheet, user) {
   var table = sheet.getDataRange().getValues();
-  var found = false;
   for (i = 0; i < table.length; i++) {
 	if (table[i][3].toString() == user) {
       if (table[i][4].toString() == "visitante") {
@@ -54,7 +53,6 @@ function testVisitante(sheet, user) {
 
 function testMorador(sheet, user) {
   var table = sheet.getDataRange().getValues();
-  var found = false;
   for (i = 0; i < table.length; i++) {
 	if (table[i][3].toString() == user) {
       if (table[i][4].toString() == "morador") {
@@ -68,7 +66,6 @@ function testMorador(sheet, user) {
 
 function testSindico(sheet, user) {
   var table = sheet.getDataRange().getValues();
-  var found = false;
   for (i = 0; i < table.length; i++) {
 	if (table[i][3].toString() == user) {
       if (table[i][4].toString() == "sindico") {
