@@ -19,8 +19,8 @@ jobs:
     - name: Run unit tests
       working-directory: /tmp/hodor/actions/tests/unit/src/
       env:
-        GS_WEBAPP_URL: ${{ secrets.INTEGRATION_TESTS_URL }}
-      run: npx mocha --timeout 5000
+        GS_WEBAPP_URL: ${{ secrets.GS_WEBAPP_URL }}
+      run: npx mocha --timeout 5000 --exit
         
   build:
     runs-on: ubuntu-latest
