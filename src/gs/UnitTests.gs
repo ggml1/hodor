@@ -1,29 +1,27 @@
 var ssId = "";
 
-function testCadastrar(house, id, name, user, type, dataSaida) {
+function testCadastrar(house, id, user, type, dataSaida) {
   var args = ["cadastrar", house, user, type, dataSaida];
-  cadastrar(id, name, args);
+  cadastrar(id, args);
   var sheet = SpreadsheetApp.openById(ssId).getSheetByName(String(house));
   var table = sheet.getDataRange().getValues();
-  var vec = [id, name, user, type, dataSaida];
+  var vec = ["ignore", id, "", user, type];
   var found = false;
   for (i = 0; i < table.length; i++) {
 	var eq = true;
-    for (j = 0; j < 5; j++) {
-      if (table[i][j + 1] != vec[j]) {
+    for (j = 1; j <= 4; j++) {
+      if (table[i][j] != vec[j]) {
         eq = false;
       }
     }
     if (eq == true) {
     	found = true;
     }
-    //found |= eq;
   }
   return found;
 }
 
 function testListarRegistrados(house, id) {
-  var args = ["listar_usuarios", house];
   var sheet = SpreadsheetApp.openById(ssId).getSheetByName(String(house));
   var resultadosObtidos = listarCadastradosPorUsuario(sheet, String(house), String(id));
   var table = sheet.getDataRange().getValues();
@@ -100,11 +98,10 @@ function run() {
   var sheets = SpreadsheetApp.openById(ssId).getSheetByName("casa");
   var house = "casa";
   var id = "789146317";
-  var name = "ffern";
   var user = "novoteste";
   var type = "visitante";
-  var dataSaida = "Fri Jan 01 00:00:00 GMT-02:00 2010";
-  Logger.log("Teste cadastrar: " + testCadastrar(house, id, name, user, type, dataSaida));
+  var tempoSaida = "3m";
+  Logger.log("Teste cadastrar: " + testCadastrar(house, id, user, type, tempoSaida));
   Logger.log("Teste visitante: " + testVisitante(sheets, user));
   Logger.log("Teste morador: " + testMorador(sheets, user));
   Logger.log("Teste sindico: " + testSindico(sheets, user));

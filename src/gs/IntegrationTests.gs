@@ -1,7 +1,7 @@
-function integrationTest(house, id, name, user, type, dataSaida) {
+function integrationTest(house, id, user, type, tempoSaida) {
   var sheet = SpreadsheetApp.openById(ssId).getSheetByName(String(house));
-  var args = ["cadastrar", house, user, type, dataSaida];
-  cadastrar(id, name, args);
+  var args = ["cadastrar", house, user, type, tempoSaida];
+  cadastrar(id, args);
   var resultadosObtidos = listarCadastradosPorUsuario(sheet, String(house), String(id));
   var found = false;
   for (i = 0; i < resultadosObtidos.length; i++) {
@@ -30,11 +30,10 @@ function integrationTest(house, id, name, user, type, dataSaida) {
 function run() {
   var house = "casa";
   var id = "789146317";
-  var name = "ffern";
   var user = "usuario_teste_integracao";
   var type = "visitante";
-  var dataSaida = "Fri Jan 01 00:00:00 GMT-02:00 2010";
-  var resultado_teste = integrationTest(house, id, name, user, type, dataSaida);
+  var tempoSaida = "5m";
+  var resultado_teste = integrationTest(house, id, user, type, tempoSaida);
   Logger.log("Teste de integracao: " + resultado_teste);
   return resultado_teste;
 }
